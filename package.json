@@ -14,5 +14,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidMach2/aluracord-matrix-reload.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/DavidMach2/aluracord-matrix-reload/issues"
+  },
+  "homepage": "https://github.com/DavidMach2/aluracord-matrix-reload#readme",
+  "description": ""
 }
