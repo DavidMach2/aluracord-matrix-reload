@@ -1,10 +1,13 @@
 import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import React from "react";
 import appConfig from "../config.json";
+import { useRouter } from "next/router";
 
 export default function ChatPage() {
   const [mensagem, setMensagem] = React.useState(""); //array
   const [listaDeMensagens, setListaDeMensagens] = React.useState([]); //array
+  const router = useRouter();
+  const username = router.query.username;
 
   /*
     // Usuário
@@ -18,10 +21,17 @@ export default function ChatPage() {
     - [X] Lista de mensagens 
     */
 
+  // function removeMessage(messageId) {
+  //   const filterMessageClicked = list.filter((mensagem) => {
+  //     return mensagem.id != messageId;
+  //   });
+  //   setListaDeMensagens(filterMessageClicked);
+  // }
+
   function handleNovaMensagem(novaMensagem) {
     const mensagem = {
       id: listaDeMensagens.length + 1,
-      de: "vanessametonini",
+      de: username,
       texto: novaMensagem,
     };
 
@@ -61,7 +71,7 @@ export default function ChatPage() {
           padding: "32px",
         }}
       >
-        <Header />
+        <Header user={username} />
         <Box
           styleSheet={{
             position: "relative",
@@ -131,7 +141,7 @@ export default function ChatPage() {
             <Button
               type="submit"
               variant="tertiary"
-              colorVariant="neutral"
+              colorVariant="positive"
               label="Enviar"
               //href=
             />
@@ -142,7 +152,7 @@ export default function ChatPage() {
   );
 }
 
-function Header() {
+function Header(props) {
   return (
     <>
       <Box
@@ -154,11 +164,11 @@ function Header() {
           justifyContent: "space-between",
         }}
       >
-        <Text variant="heading5">Chat</Text>
+        <Text variant="heading5">Chat - {props.user}</Text>
         <Button
           variant="tertiary"
-          colorVariant="neutral"
-          label="Logout"
+          colorVariant="negative"
+          label="Sair"
           href="/"
         />
       </Box>
@@ -168,7 +178,7 @@ function Header() {
 
 function MessageList(props) {
   //console.log("MessageList", props);
-  console.log(props);
+  //console.log(props);
   return (
     <Box
       tag="ul"
@@ -198,28 +208,44 @@ function MessageList(props) {
             <Box
               styleSheet={{
                 marginBottom: "8px",
+                display: "flex",
+                alignItems: "center",
+                boxShadow: "2px 1px 2px gray",
+                borderRadius: "100px",
               }}
             >
               <Image
                 styleSheet={{
-                  width: "20px",
-                  height: "20px",
+                  width: "30px",
+                  height: "30px",
                   borderRadius: "50%",
                   display: "inline-block",
                   marginRight: "8px",
+                  boxShadow: "2px 5px 5px black",
                 }}
-                src={`https://github.com/vanessametonini.png`}
+                //src={`https://github.com/vanessametonini.png`}
+                src={`https://github.com/${mensagem.de}.png`}
               />
               <Text tag="strong">{mensagem.de}</Text>
               <Text
                 styleSheet={{
-                  fontSize: "10px",
+                  fontSize: "12px",
                   marginLeft: "8px",
                   color: appConfig.theme.colors.neutrals[300],
                 }}
                 tag="span"
               >
-                {new Date().toLocaleDateString()}
+                {/* {new Date().toLocaleDateString()} */}
+                {/* {new Date().toLocaleDateString()}
+                {` `}
+                {new Date().toLocaleTimeString()} */}
+                {new Date().toLocaleDateString("pt-BR", {
+                  year: "2-digit",
+                  month: "short",
+                  day: "numeric",
+                })}
+                {` | `}
+                {new Date().toLocaleTimeString("pt-BR")}
               </Text>
             </Box>
             {mensagem.texto}
