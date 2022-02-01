@@ -39,12 +39,13 @@ function Title(props) {
 // }
 
 //export default HomePage;
-
 export default function HomePage() {
   //const username = "peas";
   // const username = "DavidMach2";
   //const username = "omariosouto";
-  const [username, setUsername] = React.useState("DavidMach2");
+  //const [username, setUsername] = React.useState("");
+  const defaultUser = "";
+  const [username, setUsername] = React.useState(defaultUser);
   const roteamento = useRouter();
 
   return (
@@ -75,7 +76,7 @@ export default function HomePage() {
             },
             width: "100%",
             maxWidth: "700px",
-            borderRadius: "5px",
+            borderRadius: "10px",
             padding: "32px",
             margin: "16px",
             boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
@@ -88,7 +89,8 @@ export default function HomePage() {
             onSubmit={function (infosDoEvento) {
               infosDoEvento.preventDefault(); // para de atualizar a pagina
               console.log("Alguem submeteu o form");
-              roteamento.push("/chat");
+              // roteamento.push("/chat");
+              roteamento.push(`/chat/?username=${username}`);
               //window.location.href = "/chat";
             }}
             styleSheet={{
@@ -101,7 +103,7 @@ export default function HomePage() {
               marginBottom: "32px",
             }}
           >
-            <Title tag="h2">Boas vindas de volta!</Title>
+            <Title tag="h2">Bem vindo ao chat da Nasa</Title>
             <Text
               variant="body3"
               styleSheet={{
@@ -168,27 +170,29 @@ export default function HomePage() {
               maxWidth: "200px",
               padding: "16px",
               backgroundColor: appConfig.theme.colors.neutrals[800],
-              border: "1px solid",
+              border: "2px solid",
               borderColor: appConfig.theme.colors.neutrals[999],
               borderRadius: "10px",
               flex: 1,
               minHeight: "240px",
             }}
           >
-            <Image
+            <ImagemVerify user={username} />
+
+            {/* <Image
               styleSheet={{
                 borderRadius: "50%",
                 marginBottom: "16px",
               }}
               src={`https://github.com/${username}.png`}
-            />
+            /> */}
             <Text
               variant="body4"
               styleSheet={{
                 color: appConfig.theme.colors.neutrals[200],
                 backgroundColor: appConfig.theme.colors.neutrals[900],
-                padding: "3px 10px",
-                borderRadius: "1000px",
+                padding: "3px 15px",
+                borderRadius: "10px",
               }}
             >
               {username}
@@ -199,4 +203,29 @@ export default function HomePage() {
       </Box>
     </>
   );
+}
+function ImagemVerify(props) {
+  if (props.user.length < 3) {
+    return (
+      <Image
+        styleSheet={{
+          borderRadius: "50%",
+          marginBottom: "16px",
+          boxShadow: "10 20px 10px 10 rgb(200 200 0 / 20%)",
+        }}
+        src={`https://avatars.githubusercontent.com/u/9919?s=460&v=4`}
+      />
+    );
+  } else {
+    return (
+      <Image
+        styleSheet={{
+          borderRadius: "50%",
+          marginBottom: "16px",
+          boxShadow: "1px 1px 15px 3px rgb(51 255 255 / 25%)",
+        }}
+        src={`https://github.com/${props.user}.png`}
+      />
+    );
+  }
 }
