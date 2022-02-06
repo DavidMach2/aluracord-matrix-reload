@@ -2,12 +2,40 @@ import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import React from "react";
 import appConfig from "../config.json";
 import { useRouter } from "next/router";
+import { createClient } from "@supabase/supabase-js";
+import { ButtonSendSticker } from "../src/components/ButtonSendSticker";
+
+//BACKEND
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0Mzk0MDY3NiwiZXhwIjoxOTU5NTE2Njc2fQ.cUWOx6TGjFFbiG0TIprfGgj44goOY2XejrE-YSL3oIY";
+const SUPABASE_URL = "https://jrirlejcqrocqmmnncke.supabase.co";
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// const dadosDoSupabase = supabaseClient.from("mensagens").select("*").then(dados) => {
+//   console.log("Dados da consulta", dados);
+// };
 
 export default function ChatPage() {
   const [mensagem, setMensagem] = React.useState(""); //array
-  const [listaDeMensagens, setListaDeMensagens] = React.useState([]); //array
+  const [listaDeMensagens, setListaDeMensagens] = React.useState([
+    {
+      id: 1,
+      de: "DavidMach2",
+      texto: ":sticker: https://www.alura.com.br/imersao-react-4/assets/figurinhas/Figurinha_1.png",
+    },
+  ]); //array
   const router = useRouter();
   const username = router.query.username;
+
+  React.useEffect(() => {
+    supabaseClient
+      .from("mensagens")
+      .select("*")
+      .order("id", { ascending: false })
+      .then(({ data }) => {
+        console.log("Dados da consulta", data);
+        // setListaDeMensagens(data);
+      });
+  }, []);
 
   /*
     // Usuário
@@ -30,15 +58,21 @@ export default function ChatPage() {
 
   function handleNovaMensagem(novaMensagem) {
     const mensagem = {
-      id: listaDeMensagens.length + 1,
+      //id: listaDeMensagens.length + 1,
       de: username,
       texto: novaMensagem,
     };
 
-    setListaDeMensagens([
-      mensagem,
-      ...listaDeMensagens, // ... = Sintaxe de Espalhamento (Spread syntax)
-    ]);
+    supabaseClient
+      .from("mensagens")
+      .insert([mensagem]) //Tem que ser um obj com os mesmos campos do database
+      .then(({ data }) => {
+        console.log("Criando mensagem", data);
+        setListaDeMensagens([
+          data[0],
+          ...listaDeMensagens, // ... = Sintaxe de Espalhamento (Spread syntax)
+        ]);
+      });
     setMensagem(""); //Limpar a variavel
   }
 
@@ -138,6 +172,7 @@ export default function ChatPage() {
                 color: appConfig.theme.colors.neutrals[200],
               }}
             />
+            <ButtonSendSticker />
             <Button
               type="submit"
               variant="tertiary"
@@ -248,7 +283,10 @@ function MessageList(props) {
                 {new Date().toLocaleTimeString("pt-BR")}
               </Text>
             </Box>
-            {mensagem.texto}
+            {/* Condicional:{mensagem.texto.startsWith(":sticker:").toString()} */}
+            {mensagem.texto.startsWith(":sticker:")
+              ? Image.src= {mensagem.texto.replace(":sticker:",'')}
+              : mensagem.texto}
           </Text>
         );
       })}
