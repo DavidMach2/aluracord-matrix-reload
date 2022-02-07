@@ -1,3 +1,4 @@
+import React from "react";
 function GlobalStyle() {
   // reset CSS
   return (
@@ -31,6 +32,7 @@ function GlobalStyle() {
 }
 
 export default function MyApp({ Component, pageProps }) {
+  //const [username, setUsername] = React.useState("");
   return (
     <>
       <GlobalStyle />

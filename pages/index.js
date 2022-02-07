@@ -46,7 +46,7 @@ export default function HomePage() {
   //const [username, setUsername] = React.useState("");
   const defaultUser = "";
   const [username, setUsername] = React.useState(defaultUser);
-  const roteamento = useRouter();
+  const router = useRouter();
 
   return (
     <>
@@ -90,7 +90,7 @@ export default function HomePage() {
               infosDoEvento.preventDefault(); // para de atualizar a pagina
               console.log("Alguem submeteu o form");
               // roteamento.push("/chat");
-              roteamento.push(`/chat/?username=${username}`);
+              router.push(`/chat/?username=${username}`);
               //window.location.href = "/chat";
             }}
             styleSheet={{
