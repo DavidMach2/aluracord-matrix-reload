@@ -42,6 +42,7 @@ export function ButtonSendSticker(props) {
             flexDirection: "column",
             borderRadius: "5px",
             position: "absolute",
+
             backgroundColor: appConfig.theme.colors.neutrals[700],
             width: {
               xs: "200px",
